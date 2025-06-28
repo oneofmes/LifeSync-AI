@@ -2,7 +2,7 @@ name: Morning Report
 
 on:
   schedule:
-    - cron: '0 22 * * *'  # 每天 22 点 UTC 时间（北京时间早上 6 点）
+    - cron: '0 22 * * *'  # 每天 22 点 UTC 时间
   workflow_dispatch:
 
 jobs:
@@ -16,20 +16,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'
+        python-version: '3.8'  # 根据项目需求选择 Python 版本
 
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
 
-    - name: Run LifeSync-AI Script
+    - name: Run Deployment Script
       env:
         ENV_NOTION_TOKEN: ${{ secrets.ENV_NOTION_TOKEN }}
         ENV_DATABASE_ID: ${{ secrets.ENV_DATABASE_ID }}
         MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
         MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
         AI_API_KEY: ${{ secrets.AI_API_KEY }}
-        WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-        WEATHER_CITY_NAME: ${{ secrets.WEATHER_CITY_NAME }}
+        OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
       run: |
-        python main.py
+        python morning_email.py
